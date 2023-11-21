@@ -69,3 +69,5 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 }
+
+tasks.getByPath("preBuild").dependsOn("ktlintFormat")
