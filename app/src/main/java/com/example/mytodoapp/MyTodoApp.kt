@@ -1,6 +1,7 @@
 package com.example.mytodoapp
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class MyTodoApp: Application() {
-}
+@HiltAndroidApp
+class MyTodoApp : Application()
