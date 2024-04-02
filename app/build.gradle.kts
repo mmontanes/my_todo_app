@@ -74,6 +74,9 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
+    // Live Data
+    implementation(libs.runtime.livedata)
+
     // Dagger Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler.ksp)

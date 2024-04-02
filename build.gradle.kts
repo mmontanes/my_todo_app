@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.org.jlleitschuh.gradle.ktlint) apply false
-//    alias(libs.plugins.io.gitlab.arturbosch.detekt) apply false
+    alias(libs.plugins.io.gitlab.arturbosch.detekt) apply false
+    alias(libs.plugins.dagger.hilt) apply false
+    alias(libs.plugins.kotlin.ksp) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block

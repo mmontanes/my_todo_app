@@ -8,11 +8,12 @@ espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.8.2"
 compose-bom = "2024.03.00"
+live-data = "1.6.4"
 
 ktlint = "11.6.1"
 detekt = "1.23.3"
 ksp = "1.9.23-1.0.19"
-hilt = "2.48.1"
+hilt = "2.51.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -29,6 +30,8 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+
+runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "live-data"}
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref  = "hilt"}
 hilt-compiler-ksp = { module = "com.google.dagger:hilt-compiler", version.ref  = "hilt" }
