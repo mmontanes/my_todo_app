@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,27 +25,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
-@Preview(showBackground = true)
 @Composable
-fun TasksScreen() {
-    Box(modifier = Modifier.fillMaxSize()){
+fun TasksScreen(tasksViewModel: TasksViewModel) {
+    val showDialog: Boolean by tasksViewModel.showDialog.observeAsState(false)
+
+    Box(modifier = Modifier.fillMaxSize()) {
         AddTaskDialog(
-            show = true,
-            onDismiss = {},
-            onTaskAdded = {})
-        FabDialog(Modifier.align(Alignment.BottomEnd))
+            show = showDialog,
+            onDismiss = { tasksViewModel.onDismissDialog() },
+            onTaskAdded = { tasksViewModel.onTaskAdded(it) }
+        )
+        FabDialog(Modifier.align(Alignment.BottomEnd), tasksViewModel)
     }
 }
 
 @Composable
-private fun FabDialog(modifier: Modifier) {
+private fun FabDialog(modifier: Modifier, tasksViewModel: TasksViewModel) {
     FloatingActionButton(onClick = {
-        // mostrar dialogo
+        tasksViewModel.onShowDialog()
     }, modifier = modifier.padding(16.dp)) {
         Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new task")
     }
@@ -53,20 +55,22 @@ private fun FabDialog(modifier: Modifier) {
 @Composable
 fun AddTaskDialog(show: Boolean, onDismiss: () -> Unit, onTaskAdded: (String) -> Unit) {
     var myTask by remember { mutableStateOf("") }
-    if(show){
-        Dialog(onDismissRequest = { onDismiss() })  {
+    if (show) {
+        Dialog(onDismissRequest = { onDismiss() }) {
             Column(Modifier.fillMaxWidth().background(Color.White).padding(16.dp)) {
                 Text(
                     text = "Add new task",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterHorizontally))
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
                 Spacer(modifier = Modifier.size(16.dp))
                 TextField(
                     value = myTask,
-                    onValueChange = {myTask = it},
+                    onValueChange = { myTask = it },
                     maxLines = 1,
-                    singleLine = true)
+                    singleLine = true
+                )
                 Spacer(modifier = Modifier.size(16.dp))
                 Button(onClick = {
                     onTaskAdded(myTask)
@@ -77,5 +81,3 @@ fun AddTaskDialog(show: Boolean, onDismiss: () -> Unit, onTaskAdded: (String) ->
         }
     }
 }
-
-
