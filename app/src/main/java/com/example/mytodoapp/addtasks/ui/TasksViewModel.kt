@@ -35,4 +35,9 @@ class TasksViewModel @Inject constructor() : ViewModel() {
         val index = _tasksList.indexOf(taskModel)
         _tasksList[index] = taskModel.copy(done = !taskModel.done)
     }
+
+    fun onDeleteTask(taskModel: TaskModel) {
+        val task = _tasksList.find { it.id == taskModel.id }
+        _tasksList.remove(task)
+    }
 }

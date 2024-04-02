@@ -1,6 +1,7 @@
 package com.example.mytodoapp.addtasks.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,7 +67,16 @@ private fun TasksList(tasksViewModel: TasksViewModel) {
 @Composable
 private fun TasksListItem(taskModel: TaskModel, tasksViewModel: TasksViewModel) {
     ElevatedCard(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        tasksViewModel.onDeleteTask(taskModel)
+                    }
+                )
+            },
         elevation = cardElevation(
             defaultElevation = 6.dp
         )
