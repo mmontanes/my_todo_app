@@ -14,6 +14,7 @@ ktlint = "11.6.1"
 detekt = "1.23.3"
 ksp = "1.9.23-1.0.19"
 hilt = "2.51.1"
+room = "2.6.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -35,6 +36,10 @@ runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedat
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref  = "hilt"}
 hilt-compiler-ksp = { module = "com.google.dagger:hilt-compiler", version.ref  = "hilt" }
+
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler-ksp = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

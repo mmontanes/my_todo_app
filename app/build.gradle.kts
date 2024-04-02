@@ -80,6 +80,11 @@ dependencies {
     // Dagger Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler.ksp)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler.ksp)
 }
 
 tasks.getByPath("preBuild").dependsOn("ktlintFormat")
