@@ -3,14 +3,20 @@ package com.example.mytodoapp.addtasks.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults.cardElevation
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.mytodoapp.addtasks.ui.model.TaskModel
 
 @Composable
 fun TasksScreen(tasksViewModel: TasksViewModel) {
@@ -40,6 +47,42 @@ fun TasksScreen(tasksViewModel: TasksViewModel) {
             onTaskAdded = { tasksViewModel.onTaskAdded(it) }
         )
         FabDialog(Modifier.align(Alignment.BottomEnd), tasksViewModel)
+        TasksList(tasksViewModel = tasksViewModel)
+    }
+}
+
+@Composable
+private fun TasksList(tasksViewModel: TasksViewModel) {
+    val tasksList: List<TaskModel> = tasksViewModel.tasksList
+
+    LazyColumn {
+        items(tasksList, key = { it.id }) { taskModel ->
+            TasksListItem(taskModel)
+        }
+    }
+}
+
+@Composable
+private fun TasksListItem(taskModel: TaskModel) {
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+        elevation = cardElevation(
+            defaultElevation = 6.dp
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = taskModel.content,
+                modifier = Modifier
+                    .weight(1f)
+            )
+            Checkbox(checked = taskModel.done, onCheckedChange = {})
+        }
     }
 }
 
@@ -54,10 +97,15 @@ private fun FabDialog(modifier: Modifier, tasksViewModel: TasksViewModel) {
 
 @Composable
 fun AddTaskDialog(show: Boolean, onDismiss: () -> Unit, onTaskAdded: (String) -> Unit) {
-    var myTask by remember { mutableStateOf("") }
+    var newTask by remember { mutableStateOf("") }
     if (show) {
         Dialog(onDismissRequest = { onDismiss() }) {
-            Column(Modifier.fillMaxWidth().background(Color.White).padding(16.dp)) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(16.dp)
+            ) {
                 Text(
                     text = "Add new task",
                     fontSize = 20.sp,
@@ -66,14 +114,15 @@ fun AddTaskDialog(show: Boolean, onDismiss: () -> Unit, onTaskAdded: (String) ->
                 )
                 Spacer(modifier = Modifier.size(16.dp))
                 TextField(
-                    value = myTask,
-                    onValueChange = { myTask = it },
+                    value = newTask,
+                    onValueChange = { newTask = it },
                     maxLines = 1,
                     singleLine = true
                 )
                 Spacer(modifier = Modifier.size(16.dp))
                 Button(onClick = {
-                    onTaskAdded(myTask)
+                    onTaskAdded(newTask)
+                    newTask = ""
                 }, Modifier.fillMaxWidth()) {
                     Text(text = "Add task")
                 }
