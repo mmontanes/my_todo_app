@@ -30,4 +30,9 @@ class TasksViewModel @Inject constructor() : ViewModel() {
         _tasksList.add(TaskModel(content = task))
         _showDialog.value = false
     }
+
+    fun onTaskCheckBoxClicked(taskModel: TaskModel) {
+        val index = _tasksList.indexOf(taskModel)
+        _tasksList[index] = taskModel.copy(done = !taskModel.done)
+    }
 }

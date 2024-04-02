@@ -57,13 +57,13 @@ private fun TasksList(tasksViewModel: TasksViewModel) {
 
     LazyColumn {
         items(tasksList, key = { it.id }) { taskModel ->
-            TasksListItem(taskModel)
+            TasksListItem(taskModel, tasksViewModel)
         }
     }
 }
 
 @Composable
-private fun TasksListItem(taskModel: TaskModel) {
+private fun TasksListItem(taskModel: TaskModel, tasksViewModel: TasksViewModel) {
     ElevatedCard(
         modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
         elevation = cardElevation(
@@ -81,7 +81,12 @@ private fun TasksListItem(taskModel: TaskModel) {
                 modifier = Modifier
                     .weight(1f)
             )
-            Checkbox(checked = taskModel.done, onCheckedChange = {})
+            Checkbox(
+                checked = taskModel.done,
+                onCheckedChange = {
+                    tasksViewModel.onTaskCheckBoxClicked(taskModel)
+                }
+            )
         }
     }
 }
