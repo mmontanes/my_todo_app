@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mytodoapp.addtasks.domain.AddTaskUseCase
+import com.example.mytodoapp.addtasks.domain.DeleteTaskUseCase
 import com.example.mytodoapp.addtasks.domain.GetTaskUseCase
 import com.example.mytodoapp.addtasks.domain.UpdateTaskUseCase
 import com.example.mytodoapp.addtasks.ui.TasksUIState.Error
@@ -25,6 +26,7 @@ import javax.inject.Inject
 class TasksViewModel @Inject constructor(
     private val addTaskUseCase: AddTaskUseCase,
     private val updateTaskUseCase: UpdateTaskUseCase,
+    private val deleteTaskUseCase: DeleteTaskUseCase,
     getTaskUseCase: GetTaskUseCase
 ) : ViewModel() {
 
@@ -34,9 +36,6 @@ class TasksViewModel @Inject constructor(
 
     private val _showDialog = MutableLiveData<Boolean>()
     val showDialog: LiveData<Boolean> = _showDialog
-
-//    private val _tasksList = mutableStateListOf<TaskModel>()
-//    val tasksList: List<TaskModel> = _tasksList
 
     fun onShowDialog() {
         _showDialog.value = true
@@ -62,8 +61,8 @@ class TasksViewModel @Inject constructor(
     }
 
     fun onDeleteTask(taskModel: TaskModel) {
-        // TODO: borrar item
-//        val task = _tasksList.find { it.id == taskModel.id }
-//        _tasksList.remove(task)
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteTaskUseCase(taskModel)
+        }
     }
 }
