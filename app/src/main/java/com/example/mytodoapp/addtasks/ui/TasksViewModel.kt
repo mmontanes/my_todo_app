@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mytodoapp.addtasks.domain.AddTaskUseCase
 import com.example.mytodoapp.addtasks.domain.GetTaskUseCase
+import com.example.mytodoapp.addtasks.domain.UpdateTaskUseCase
 import com.example.mytodoapp.addtasks.ui.TasksUIState.Error
 import com.example.mytodoapp.addtasks.ui.TasksUIState.Loading
 import com.example.mytodoapp.addtasks.ui.TasksUIState.Success
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TasksViewModel @Inject constructor(
     private val addTaskUseCase: AddTaskUseCase,
+    private val updateTaskUseCase: UpdateTaskUseCase,
     getTaskUseCase: GetTaskUseCase
 ) : ViewModel() {
 
@@ -54,9 +56,9 @@ class TasksViewModel @Inject constructor(
     }
 
     fun onTaskCheckBoxClicked(taskModel: TaskModel) {
-        // TODO: Actualizar check
-//        val index = _tasksList.indexOf(taskModel)
-//        _tasksList[index] = taskModel.copy(done = !taskModel.done)
+        viewModelScope.launch(Dispatchers.IO) {
+            updateTaskUseCase(taskModel.copy(done = !taskModel.done))
+        }
     }
 
     fun onDeleteTask(taskModel: TaskModel) {
